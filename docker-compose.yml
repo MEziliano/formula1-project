@@ -3,6 +3,15 @@ version: '3.8'
 services:
   api:
     build: .
+    develop:
+      watch:
+        # Sincroniza alterações de código em tempo real (mais rápido)
+        - action: sync
+          path: ./src  # Pasta do seu código local
+          target: /app/src # Pasta correspondente dentro do container
+        # Reconstrói a imagem se arquivos de dependência ou Dockerfile mudarem
+        - action: rebuild
+          path: ./pyproject.toml # Ou package.json, Dockerfile, etc.
     ports:
       - "8000:8000"
     volumes:
@@ -12,8 +21,7 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    command: >
-      sh -c "python -m wait-for db:5432 --timeout=30 -- python main.py"
+    command: python main.py
 
   db:
     image: postgres:15-alpine
@@ -24,7 +32,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -32,4 +40,4 @@ services:
       retries: 5
 
 volumes:
-  postgres_
+  postgres_data:

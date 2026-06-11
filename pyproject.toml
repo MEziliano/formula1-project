@@ -1,7 +1,15 @@
 [project]
 name = "f1-project"
 version = "0.1.0"
-description = "Add your description here"
+description = "F1 project to analyze historical results of races, drivers, teams and championships"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.28.0",
+    "requests>=2.31.0",
+    "beautifulsoup4>=4.12.3",
+    "pandas>=2.2.0",
+    "openpyxl>=3.1.2",
+    "psycopg2-binary>=2.9.9",
+]

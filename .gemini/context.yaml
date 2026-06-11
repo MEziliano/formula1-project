@@ -1,0 +1,40 @@
+project:
+  name: "F1 Project"
+  version: "0.1.0"
+  description: "Historical Database for Formula 1"
+
+stack_tecnologica:
+  linguagem:
+    nome: "Python"
+    versao: "3.11-slim"
+  framework: "FastAPI"
+  gerenciador_pacotes: "uv" # Decisão crítica: Adotado uv no Docker copiando o binário oficial
+  infra:
+    container: "Docker"
+    orchestration: "Docker Compose"
+    cloud_providers: ["AWS", "GCP"]
+
+diretrizes_socraticas:
+  nivel_aprendizado: "avancado"
+  estilo: "mentoria_desafiadora"
+  foco: ["IA", "Engenharia de Prompt", "Cloud Infrastructure"]
+
+decisoes_arquitetura:
+  - data: "2026-03"
+    decisao: "Uso de .env para segredos"
+    motivo: "Segurança e conformidade com 12-Factor App"
+  - data: "2026-03"
+    decisao: "Multi-agent System via Antigravity"
+    motivo: "Isolamento de responsabilidades (Docker, QA, Arquiteto)"
+  - data: "2026-06"
+    decisao: "Adoção do uv no Docker"
+    motivo: "Acelerar tempos de build e centralizar dependências no pyproject.toml"
+  - data: "2026-06"
+    decisao: "Configuração do Docker Compose Watch"
+    motivo: "Sincronização de alterações de código em tempo real sem rebuild manual"
+
+historico_aprendizado:
+  conceitos_dominados:
+    - "Multi-stage builds no Docker"
+    - "VPC na AWS"
+    - "Socratic Prompting"
