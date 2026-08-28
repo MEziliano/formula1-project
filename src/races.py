@@ -1,11 +1,15 @@
 import os
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-
-import pandas as pd
-
 url = "https://www.formula1.com/en/results.html"
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+}
 
 print(
     "\n\t\t=================== Historical Results - F1 Automation ===================\n Welcome to the Result Verifyer!\n \n"
@@ -68,7 +72,7 @@ def main(years):
         print(url)
         df = pd.DataFrame()
         response = (
-            requests.get(url, verify=False)
+            requests.get(url, headers=HEADERS)
             .content.decode("ISO-8859-1")
             .encode("latin-1")
         )
@@ -78,12 +82,17 @@ def main(years):
         for row in table.find_all("tr"):
             columns = row.find_all("td")
             if columns != []:
-                GRAND_PRIX = columns[1].text.strip()
-                DATE = columns[2].text.strip()
-                WINNER = " ".join([span.get_text(strip=True) for span in columns[3]])
-                CAR = columns[4].text.strip()
-                LAPS = columns[5].text.strip()
-                TIME = columns[6].text.strip()
+                gp_cell = columns[0]
+                flag_svg = gp_cell.find("svg")
+                if flag_svg:
+                    flag_svg.decompose()
+                GRAND_PRIX = gp_cell.get_text(strip=True)
+                DATE = columns[1].text.strip()
+                name_spans = columns[2].select('span[class*="max-"]')
+                WINNER = " ".join(s.get_text(strip=True) for s in name_spans)
+                CAR = columns[3].text.strip()
+                LAPS = columns[4].text.strip()
+                TIME = columns[5].text.strip()
 
                 # print(GRAND_PRIX, DATE, WINNER, CAR, LAPS, TIME) #
 
